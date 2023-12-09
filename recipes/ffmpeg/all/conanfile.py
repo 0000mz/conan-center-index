@@ -652,6 +652,11 @@ class FFMpegConan(ConanFile):
             deps = AutotoolsDeps(self)
             deps.generate()
 
+        pkgcfg_path_env = Environment()
+        pkgcfg_path_env.define_path("PKG_CONFIG_PATH", os.environ['PKG_CONFIG_PATH'])
+        pkgcfg_path_env.prepend_path("PKG_CONFIG_PATH", self.generators_folder)
+        pkgcfg_path_env.vars(self, scope="build").save_script("pkgconfig_deps_path")
+
         deps = PkgConfigDeps(self)
         deps.generate()
 
